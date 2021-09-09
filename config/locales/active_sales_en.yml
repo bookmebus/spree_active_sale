@@ -4,6 +4,11 @@
 en:
   spree:
     active_sale:
+      name: "Active Sales"
+      new: "New Active Sale"
+      attributes:
+        name: "Name"
+        permalink: "Permalink"
       active_record:
         name: "Sale name"
         permalink: "Sale permalink"
