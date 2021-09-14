@@ -18,6 +18,15 @@ Spree::Core::Engine.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v2 do
+      resources :active_sale_events, only: [:index, :show]
+      namespace :active_sale do
+        resources :products, only: [:index]
+      end
+    end
+  end
+
   resources :active_sales, :path => :sales, :only => [:index, :show]
   get '/:view_type/t/*id', :to => 'taxons#show', :as => :sale_nested_taxons
   get '/sales/t/*id', :to => 'taxons#show', :as => :sales_by_taxon

@@ -18,5 +18,6 @@ gem 'spree_analytics_trackers'
 gem 'rails-controller-testing'
 gem 'factory_bot'
 gem 'ffaker'
+gem 'byebug'
 
 gemspec

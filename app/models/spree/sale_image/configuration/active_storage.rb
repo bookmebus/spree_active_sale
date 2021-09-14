@@ -12,9 +12,9 @@ module Spree
 
           def self.styles
             @styles ||= {
-              mini: '100x100>',
-              small: '240x240>',
-              medium: '600x600'
+              mini: '600x150>',
+              small: '1200x300>',
+              medium: '1800x450>'
             }
           end
 

@@ -7,6 +7,7 @@ module Spree
     has_many :sale_images, -> { order(position: :asc) },  :as => :viewable, :dependent => :destroy
     has_many :sale_products, -> { order(position: :asc) }, :dependent => :destroy
     has_many :products, -> { order(position: :asc) }, :through => :sale_products
+    has_many :highlight_products, -> { limit(6) }, :through => :sale_products, source: :product
     has_many :sale_taxons, -> { order(position: :asc) }, :dependent => :destroy
     has_many :taxons, -> { order(position: :asc) }, :through => :sale_taxons
     has_many :sale_properties, :dependent => :destroy
