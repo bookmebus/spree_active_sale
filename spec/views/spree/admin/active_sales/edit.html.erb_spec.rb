@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "spree/admin/active_sales/edit" do
+RSpec.describe "spree/admin/active_sales/edit", type: :view do
   before(:each) do
-    @spree_active_sale = assign(:spree_active_sale, stub_model(Spree::ActiveSale))
+    @spree_active_sale = assign(:spree_active_sale, instance_double(Spree::ActiveSale))
   end
 
   it "renders the edit spree_active_sale form" do
