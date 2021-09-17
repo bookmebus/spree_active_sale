@@ -1,27 +1,28 @@
 module Spree
-  Config.searcher_class.class_eval do
-
-    def retrieve_sales(*args)
-      @sales_scope = get_sale_scope
-      if args
-        args.each do |additional_scope|
-          case additional_scope
+  module Search
+    module SearcherClassDecorator
+      def retrieve_sales(*args)
+        @sales_scope = get_sale_scope
+        if args
+          args.each do |additional_scope|
+            case additional_scope
             when Hash
               scope_method = additional_scope.keys.first
               scope_values = additional_scope[scope_method]
               @sales_scope = @sales_scope.send(scope_method.to_sym, *scope_values)
             else
               @sales_scope = @sales_scope.send(additional_scope.to_sym)
+            end
           end
         end
+
+        curr_page = @properties[:page] || 1
+        per_page  = @properties[:per_page] || SpreeActiveSale::Config[:active_sale_events_per_page]
+        @sales    = @sales_scope.page(curr_page).per(per_page)
       end
 
-      curr_page = @properties[:page] || 1
-      per_page  = @properties[:per_page] || SpreeActiveSale::Config[:active_sale_events_per_page]
-      @sales    = @sales_scope.page(curr_page).per(per_page)
-    end
+      protected
 
-    protected
       def get_base_scope
         sale_scope = Spree::ActiveSaleEvent.available(sale_params)
         unless taxon.blank?
@@ -87,5 +88,8 @@ module Spree
         @properties[:per_page] = per_page > 0 ? per_page : Spree::Config[:products_per_page]
         @properties[:page] = (params[:page].to_i <= 0) ? 1 : params[:page].to_i
       end
+    end
   end
 end
+
+Spree::Config.searcher_class.prepend(Spree::Search::SearcherClassDecorator)
