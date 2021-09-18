@@ -66,15 +66,21 @@ module Spree
       products.first
     end
 
-    def live?(moment=object_zone_time)
+    def live?(moment=nil)
+      moment = moment || object_zone_time
+
       (self.start_date <= moment && self.end_date >= moment) || self.is_permanent? if start_and_dates_available?
     end
 
-    def upcoming?(moment=object_zone_time)
+    def upcoming?(moment=nil)
+      moment = moment || object_zone_time
+
       (self.start_date >= moment && self.end_date > self.start_date) if start_and_dates_available?
     end
 
-    def past?(moment=object_zone_time)
+    def past?(moment=nil)
+      moment = moment || object_zone_time
+
       (self.start_date < moment && self.end_date > self.start_date && self.end_date < moment) if start_and_dates_available?
     end
 

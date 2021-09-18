@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "spree/admin/active_sales/new" do
+RSpec.describe "spree/admin/active_sales/new", type: :view do
   before(:each) do
-    assign(:spree_active_sale, stub_model(Spree::ActiveSale).as_new_record)
+    assign(:spree_active_sale, Spree::ActiveSale.new)
   end
 
   it "renders new admin_active_sale form" do

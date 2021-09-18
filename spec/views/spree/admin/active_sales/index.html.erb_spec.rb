@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe "spree/admin/active_sales/index" do
+RSpec.describe "spree/admin/active_sales/index", type: :view do
   before(:each) do
     assign(:spree_active_sales, [
-      stub_model(Spree::ActiveSale),
-      stub_model(Spree::ActiveSale)
+      instance_double(Spree::ActiveSale),
+      instance_double(Spree::ActiveSale)
     ])
   end
 

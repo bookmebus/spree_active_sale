@@ -1,14 +1,16 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Spree::ProductsController do
-  let!(:user) { mock_model(Spree::User, :spree_api_key => 'fake', :last_incomplete_spree_order => nil) }
+describe Spree::ProductsController, type: :controller do
+  routes { Spree::Core::Engine.routes }
 
-  let(:active_sale_event) { create(:active_sale_event_for_product) }
-  let(:inactive_sale_event) { create(:inactive_sale_event_for_product) }
+  let!(:user) { instance_double(Spree::User, :spree_api_key => 'fake', :last_incomplete_spree_order => nil) }
+
+  let(:active_sale_event) { FactoryBot.create(:active_sale_event_with_products) }
+  let(:inactive_sale_event) { FactoryBot.create(:inactive_sale_event_with_products) }
 
   before do
-    controller.stub :spree_current_user => user
+    allow_any_instance_of(Spree::ProductsController).to receive(:spree_current_user).and_return(user)
     user.stub :has_spree_role? => true
   end
 
@@ -17,11 +19,13 @@ describe Spree::ProductsController do
       it "then product view page should be accessible" do
         event = active_sale_event
         product = event.products.first
-        event.live_and_active?.should be_true
-        product.live?.should be_true
-        spree_get :show, :id => product.to_param
-        response.should be_success
-        response.status.should == 200
+
+        expect(event.live_and_active?).to eq(true)
+        expect(product.live?).to eq(true)
+
+        get :show, params: { id: product.to_param }
+
+        expect(response.status).to eq(200)
       end
     end
 
@@ -29,10 +33,13 @@ describe Spree::ProductsController do
       it "then product view page should not be accessible" do
         event = inactive_sale_event
         product = event.products.first
-        event.live_and_active?.should be_false
-        product.live?.should be_false
-        spree_get :show, :id => product.to_param
-        response.should redirect_to(spree.root_path)
+
+        expect(event.live_and_active?).to eq(false)
+        expect(product.live?).to eq(false)
+
+        get :show, params: { id: product.to_param }
+
+        expect(response).to redirect_to(root_url)
       end
     end
   end
