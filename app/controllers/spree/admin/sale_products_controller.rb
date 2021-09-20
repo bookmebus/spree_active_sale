@@ -5,7 +5,7 @@ module Spree
       prepend_before_action :load_data
 
       def create
-        result = ActiveSale::SaleProductCreator.call(
+        result = ::ActiveSale::SaleProductCreator.call(
           product_id: permitted_resource_params["product_id"],
           active_sale_event: @active_sale_event
         )
@@ -26,7 +26,7 @@ module Spree
       end
 
       def destroy
-        ActiveSale::SaleProductDestroyer.call(sale_product: @sale_product)
+        ::ActiveSale::SaleProductDestroyer.call(sale_product: @sale_product)
 
         flash.notice = I18n.t('spree.active_sale.notice_messages.event_deleted')
 

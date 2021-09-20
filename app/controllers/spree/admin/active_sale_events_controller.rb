@@ -7,7 +7,7 @@ module Spree
 
       def create
         active_sale_event_params = permitted_resource_params.merge(active_sale_id: @active_sale.id)
-        context = ActiveSale::ActiveSaleEventCreator.call(params: active_sale_event_params)
+        context = ::ActiveSale::ActiveSaleEventCreator.call(params: active_sale_event_params)
         @active_sale_event = context.active_sale_event
 
         if context.success
@@ -25,7 +25,7 @@ module Spree
       end
 
       def update
-        context = ActiveSale::ActiveSaleEventUpdater.call(active_sale_event: @object, params: permitted_resource_params)
+        context = ::ActiveSale::ActiveSaleEventUpdater.call(active_sale_event: @object, params: permitted_resource_params)
         if context.success
           respond_with(@object) do |format|
             format.html do
@@ -49,7 +49,7 @@ module Spree
       end
 
       def destroy
-        ActiveSale::ActiveSaleEventDestroyer.call(active_sale_event: @active_sale_event)
+        ::ActiveSale::ActiveSaleEventDestroyer.call(active_sale_event: @active_sale_event)
 
         flash.notice = I18n.t('spree.active_sale.notice_messages.event_deleted')
 
