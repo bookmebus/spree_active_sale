@@ -11,6 +11,7 @@
         <tr data-hook="images_header">
           <th scope="col" colspan="2"><%= Spree.t(:thumbnail) %></th>
           <th scope="col"><%= Spree.t(:alt_text) %></th>
+          <th scope="col"><%= Spree.t(:created_at) %></th>
           <th scope="col" data-hook="admin_active_sale_active_sale_event_images_index_header_actions" class="actions"></th>
         </tr>
       </thead>
@@ -25,6 +26,7 @@
               <%= link_to image_tag(main_app.url_for(image.url(:mini))), main_app.rails_blob_url(image.attachment) %>
             </td>
             <td><%= image.alt %></td>
+            <td><%= image.created_at %></td>
             <td class="actions" data-hook="admin_active_sale_events_index_row_actions">
               <p class="actions" data-hook="actions">
               <%= link_to_edit_url [:edit, :admin, @active_sale, @active_sale_event, image], :no_text => true %>

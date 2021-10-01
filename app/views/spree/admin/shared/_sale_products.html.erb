@@ -12,6 +12,7 @@
           <th scope="col" ><%= Spree.t(:sku) %></th>
           <th scope="col" colspan="2"><%= Spree.t(:name) %></th>
           <th scope="col"><%= Spree.t(:master_price) %></th>
+          <th scope="col"><%= Spree.t(:created_at) %></th>
           <th scope="col" data-hook="admin_active_sale_events_index_header_actions" class="actions"></th>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
             <td class="align-center"><%= mini_image(product) %></td>
             <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
             <td class="align-center"><%= product.display_price.to_html rescue '' %></td>
+            <td class="align-center"><%= product.created_at %></td>
             <td class="actions" data-hook="admin_active_sale_events_index_row_actions">
               <p class="actions" data-hook="actions">
               <%= link_to_edit_url edit_admin_product_url(sale_product.product), :no_text => true %>
