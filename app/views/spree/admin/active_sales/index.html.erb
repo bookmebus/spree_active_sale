@@ -34,6 +34,7 @@
       <tr data-hook="admin_active_sales_index_headers">
         <th scope="col"><%= Spree.t("active_sale.name") %></th>
         <th scope="col"><%= Spree.t("active_sale.permalink") %></th>
+        <th scope="col"><%= Spree.t(:created_at) %></th>
         <th scope="col" data-hook="admin_active_sales_index_header_actions" class="actions"></th>
       </tr>
     </thead>
@@ -42,6 +43,7 @@
         <tr data-hook="admin_active_sales_index_rows" class="<%= cycle('odd', 'even') %>">
           <td><%= link_to active_sale.try(:name), edit_admin_active_sale_path(active_sale) %></td>
           <td><%= active_sale.permalink %></td>
+          <td><%= active_sale.created_at %></td>
           <td data-hook="admin_notifications_index_row_actions">
             <span class="d-flex justify-content-end">
               <%= link_to_edit active_sale, no_text: true, class: 'edit' if can?(:edit, active_sale) %>
