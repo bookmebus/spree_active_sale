@@ -11,6 +11,20 @@ describe Spree::ActiveSaleEvent do
     expect(active_sale_event.new_record?).to eq(true)
   end
 
+  context 'Effective scope' do
+    it "should return only active and not expired active event" do
+      Spree::ActiveSaleEvent.destroy_all
+      active = create(:active_sale_event, start_date: 2.days.ago, end_date: 1.days.from_now, is_active: true)
+      inactive = create(:active_sale_event, start_date: 2.days.ago, end_date: 1.days.from_now, is_active: false)
+      expired = create(:active_sale_event, start_date: 2.days.ago, end_date: 1.days.ago, is_active: true)
+
+      result = Spree::ActiveSaleEvent.effective
+
+      expect(result.size).to eq(1)
+      expect(result.first).to eq(active)
+    end
+  end
+
   context "Eventable's instace methods" do
     let(:active_sale_event) { create :active_sale_event }
 
