@@ -18,6 +18,10 @@ module Spree
     def live?
       !self.active_sale_events_available.blank? || !self.find_live_taxons.blank?
     end
+
+    def flash_sale_product?
+      !self.active_sale_events_available.blank?
+    end
   end
 end
 
