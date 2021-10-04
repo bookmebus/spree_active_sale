@@ -6,11 +6,12 @@ module Spree
 
       def create
         result = ::ActiveSale::SaleProductCreator.call(
-          product_id: permitted_resource_params["product_id"],
+          product_ids: permitted_resource_params["product_ids"],
           active_sale_event: @active_sale_event
         )
-        @object = result.sale_product
+        @object = result.sale_products
 
+        debugger
         if result.success
           flash[:success] = flash_message_for(@object, :successfully_created)
           respond_with(@object) do |format|

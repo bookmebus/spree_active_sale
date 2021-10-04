@@ -16,10 +16,10 @@ RSpec.describe ActiveSale::SaleProductCreator do
 
     result = ActiveSale::SaleProductCreator.call(
       active_sale_event: active_sale_event.reload,
-      product_id: product.id
+      product_ids: [product.id]
     )
 
-    expect(result.sale_product).to have_attributes(
+    expect(result.sale_products.first).to have_attributes(
       active_sale_event_id: active_sale_event.id,
       product_id: product.id
     )
@@ -28,5 +28,26 @@ RSpec.describe ActiveSale::SaleProductCreator do
       product_id: product.id,
       promotion_rule_id: active_sale_event.promotion_rules.first.id
     )
+  end
+
+  it "handles sale product with invalid product" do
+    promotion = create( :promotion, description: 'promotion description')
+    promotion_rule = create(:promotion_rules_product, promotion: promotion)
+    active_sale_event = create(
+      :active_sale_event,
+      promotion: promotion,
+      discount: 30,
+      description: 'bar',
+      start_date: DateTime.now,
+      end_date: DateTime.now.next_week
+    )
+
+    result = ActiveSale::SaleProductCreator.call(
+      active_sale_event: active_sale_event.reload,
+      product_ids: ['foobar']
+    )
+
+    expect(result.success).to eq(false)
+    expect(result.errors).to eq(["Validation failed: Product must exist"])
   end
 end

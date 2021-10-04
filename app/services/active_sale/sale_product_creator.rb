@@ -2,21 +2,25 @@ module ActiveSale
   class SaleProductCreator < BaseService
     def call
       Spree::SaleProduct.transaction do
-        sale_product = Spree::SaleProduct.new(
-          product_id: product_id,
-          active_sale_event_id: active_sale_event.id
-        )
-        context.sale_product = sale_product
-
-        if sale_product.save!
-          Spree::ProductPromotionRule.create(
+        context.errors = []
+        context.sale_products = []
+        product_ids.each do |product_id|
+          sale_product = Spree::SaleProduct.new(
             product_id: product_id,
-            promotion_rule_id: active_sale_event.promotion_rules.first.id,
-            preferences: nil
+            active_sale_event_id: active_sale_event.id
           )
-        else
-          context.success = false
-          context.errors = context.active_sale_event.errors.messages
+
+          if sale_product.save!
+            Spree::ProductPromotionRule.create(
+              product_id: product_id,
+              promotion_rule_id: active_sale_event.promotion_rules.first.id,
+              preferences: nil
+            )
+            context.sale_products << sale_product
+          else
+            context.success = false
+            context.errors << sale_product.errors.messages
+          end
         end
 
         context
@@ -33,8 +37,8 @@ module ActiveSale
       attributes.fetch(:active_sale_event)
     end
 
-    def product_id
-      attributes.fetch(:product_id)
+    def product_ids
+      attributes.fetch(:product_ids).uniq
     end
   end
 end

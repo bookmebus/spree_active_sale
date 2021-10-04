@@ -8,7 +8,7 @@
       <div class="form-group">
         <%= f.label :product_name, Spree.t('active_sale.event.active_record.product_name', :default => :product_name), class: "text-md" %>
         <p class='hint'><%= Spree.t('active_sale.event.product_name_hint') %></p>
-        <%= f.select(:product_id, {}, {}, id: "product_id", :multiple => false, class: "select2") %>
+        <%= f.select(:product_id, {}, {}, id: "product_ids", :multiple => true,  class: "select2") %>
         <%= f.error_message_on :active_sale_event_id %>
       </div>
     </div>
@@ -26,7 +26,7 @@
 <% end %>
 <script>
   $(document).ready(function() {
-    $('#product_id').select2({
+    $('#product_ids').select2({
       ajax: {
         url: "<%= search_admin_active_sales_path %>",
         dataType: "json",
