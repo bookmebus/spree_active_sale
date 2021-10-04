@@ -24,7 +24,8 @@ module Spree
     delegate :promotion_rules, to: :promotion
     delegate :promotion_actions, to: :promotion
 
-    scope :active, -> { where(is_active: true) }
+    scope :active_and_not_expired, -> { where(is_active: true).where("end_date > ?", Time.zone.now.utc) }
+    singleton_class.send(:alias_method, :effective, :active_and_not_expired)
 
     class << self
       # Spree::ActiveSaleEvent.is_live? method
