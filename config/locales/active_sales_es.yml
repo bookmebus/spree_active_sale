@@ -4,6 +4,7 @@
 es:
   spree:
     active_sale:
+      image_upload_description: "Please use an image with a ratio of 4:1. eg 1200x300."
       active_record:
         name: "Nombre de la campaña"
       event:
