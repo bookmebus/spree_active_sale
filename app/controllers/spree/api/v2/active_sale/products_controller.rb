@@ -4,7 +4,7 @@ module Spree
       module ActiveSale
         class ProductsController < ResourceController
           def collection
-            active_sale_event.products.includes(master: :images)
+            active_sale_event.products.includes(:translations, vendor: :translations, master: :images)
           end
 
           def collection_serializer

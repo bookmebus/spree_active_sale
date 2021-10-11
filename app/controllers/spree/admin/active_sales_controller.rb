@@ -26,7 +26,10 @@ module Spree
       end
 
       def search
-        params[:q].blank? ? [] : @products = Spree::Product.limit(20).ransack(:name_cont => params[:q]).result
+        @products = Spree::Product.includes(:translations, vendor: :translations).limit(12)
+        if params[:q].present?
+          @products = @products.ransack(:name_cont => params[:q]).result
+        end
       end
 
       private

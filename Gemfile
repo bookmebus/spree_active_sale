@@ -14,6 +14,7 @@ gem 'spree', github: 'spree/spree', branch: '4-2-stable'
 gem 'spree_auth_devise', '~> 4.3'
 gem 'coveralls', require: false
 gem 'spree_analytics_trackers'
+gem 'spree_multi_vendor'
 
 gem 'rails-controller-testing'
 gem 'factory_bot'

@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_backend', spree_version
   s.add_dependency 'spree_extension'
   s.add_dependency 'spree_analytics_trackers'
+  s.add_dependency 'spree_multi_vendor'
 
   # gem 'factory_bot_rails'
   # gem 'ffaker'
