@@ -3,10 +3,12 @@
 
 en:
   spree:
+    vendor: "Vendor"
     active_sale:
       name: "Active Sales"
       new: "New Active Sale"
       image_upload_description: "Please use an image with a ratio of 4:1. eg 1200x300."
+      added_at: "Added At"
       attributes:
         name: "Name"
         permalink: "Permalink"
