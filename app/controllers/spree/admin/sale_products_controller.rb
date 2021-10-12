@@ -49,10 +49,10 @@ module Spree
         def load_data
           @active_sale ||= Spree::ActiveSale.find_by_permalink!(params[:active_sale_id])
           @active_sale_event ||= Spree::ActiveSaleEvent.find(params[:active_sale_event_id])
-          @search = super.ransack(params[:q])
-          @sale_products ||= @active_sale_event
-            .sale_products
-            .ransack(params[:q])
+
+          @sale_products = @active_sale_event.sale_products
+          @sale_products = @sale_products.search_product(params[:q]) if params[:q].present?
+          @sale_products
             .includes(product: [:translations, vendor: :translations])
             .page(params[:page])
             .per(SpreeActiveSale::Config[:admin_active_sale_event_products_per_page])
