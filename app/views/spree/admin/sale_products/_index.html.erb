@@ -15,5 +15,23 @@
     <%= Spree.t('active_sale.event.single_product_sale_message') %>
   </div>
 <% end %>
+<% content_for :table_filter do %>
+  <div data-hook="admin_active_sales_sidebar">
+    <%= form_with url: admin_active_sale_active_sale_event_sale_products_url(@active_sale, @active_sale_event) do |f| %>
+      <%- locals = {f: f} %>
+      <div data-hook="admin_active_sales_index_search" class="row">
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <%= f.label :search_by_name, Spree.t(:name) %>
+            <%= f.text_field :q, value: params[:q], size: 15, class: "form-control js-quick-search-target js-filterable" %>
+          </div>
+        </div>
+      </div>
+      <div data-hook="admin_active_sales_index_search_buttons" class="form-actions">
+        <%= button Spree.t(:search), 'search.svg' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
 <%= render :partial => 'spree/admin/shared/sale_products', :locals => { :sale_products => single_product_sale ? [@sale_products.first] : @sale_products } %>
