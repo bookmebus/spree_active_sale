@@ -9,6 +9,7 @@ RSpec.describe Spree::Api::V2::ActiveSaleEventsController, type: :controller do
       active_sale_event = create(:active_sale_event)
       product = create(:product)
       sale_product = create(:sale_product, product: product, active_sale_event: active_sale_event)
+      _active_sale_event_with_no_product = create(:active_sale_event)
 
       get :index, params: { "include" => "highlight_products" }
 
