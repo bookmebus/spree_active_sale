@@ -33,28 +33,6 @@ RSpec.describe ActiveSale::ActiveSaleEventCreator do
       is_permanent: false,
       single_product_sale: false
     )
-
-    expect(active_sale_event.promotion).to have_attributes(
-      description: active_sale_event.description.first(255),
-      starts_at: active_sale_event.start_date,
-      expires_at: active_sale_event.end_date
-    )
-    expect(active_sale_event.promotion.promotion_actions.first).to have_attributes(
-      promotion: active_sale_event.promotion,
-      type: "Spree::Promotion::Actions::CreateItemAdjustments",
-      preferences: nil
-    )
-    expect(active_sale_event.promotion.promotion_actions.first.calculator).to have_attributes(
-      type: "Spree::Calculator::PercentOnLineItem",
-      calculable_type: "Spree::PromotionAction",
-      calculable_id: active_sale_event.promotion_actions.last.id,
-      preferences: { percent: 40}
-    )
-    expect(active_sale_event.promotion.promotion_rules.first).to have_attributes(
-      promotion: active_sale_event.promotion,
-      type: "Spree::Promotion::Rules::Product",
-      preferences: {:match_policy=>"any"}
-    )
   end
 
   it "handles failed create active sale event" do

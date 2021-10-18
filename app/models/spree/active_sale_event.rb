@@ -14,17 +14,13 @@ module Spree
     has_many :properties, :through => :sale_properties
 
     belongs_to :active_sale
-    belongs_to :promotion, class_name: "Spree::Promotion"
 
-    validates :name, :start_date, :end_date, :active_sale_id, :promotion_id, :presence => true
+    validates :name, :start_date, :end_date, :active_sale_id, :presence => true
 
     validate  :validate_start_and_end_date
     validate  :validate_with_live_event
 
-    delegate :promotion_rules, to: :promotion
-    delegate :promotion_actions, to: :promotion
-
-    scope :active_and_not_expired, -> { where(is_active: true).where("end_date > ?", Time.zone.now.utc) }
+    scope :active_and_not_expired, -> { where(is_active: true).where("start_date < ?", Time.zone.now.utc).where("end_date > ?", Time.zone.now.utc) }
     scope :has_product_count, -> { where('sale_products_count>0') }
     scope :effective, -> { active_and_not_expired.has_product_count }
 
