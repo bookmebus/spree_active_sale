@@ -20,7 +20,7 @@ module Spree
     validate  :validate_start_and_end_date
     validate  :validate_with_live_event
 
-    scope :active_and_not_expired, -> { where(is_active: true).where("start_date < ?", Time.zone.now.utc).where("end_date > ?", Time.zone.now.utc) }
+    scope :active_and_not_expired, -> { where("start_date < ?", Time.zone.now.utc).where("end_date > ?", Time.zone.now.utc) }
     scope :has_product_count, -> { where('sale_products_count>0') }
     scope :effective, -> { active_and_not_expired.has_product_count }
 

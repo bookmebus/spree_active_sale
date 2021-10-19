@@ -88,7 +88,6 @@ module Spree
         def load_data
           @taxons = Taxon.order(:name)
           @shipping_categories = ShippingCategory.order(:name)
-          @promotions = Spree::PromotionCategory.active_sale.promotions
         end
     end
   end
