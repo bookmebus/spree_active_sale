@@ -44,7 +44,6 @@ FactoryBot.define do
   # Default Active Sale Event Factory
   factory :active_sale_event, :class => Spree::ActiveSaleEvent, :aliases => [:event] do
     active_sale
-    promotion
 
     # attributes
     sequence(:name) { |n| "Active Sale Event ##{n} - #{Kernel.rand(9999)}" }
@@ -84,19 +83,5 @@ FactoryBot.define do
   factory :sale_taxon, :class => Spree::SaleTaxon do
     active_sale_event { FactoryBot.create(:active_sale_event) }
     taxon { FactoryBot.create(:taxon) }
-  end
-
-  factory :promotion_action, :class => Spree::PromotionAction do
-    promotion
-    type { "Spree::Promotion::Actions::CreateItemAdjustments" }
-  end
-
-  factory :promotion_rules_product, :class => Spree::Promotion::Rules::Product do
-    promotion
-    type { "Spree::Promotion::Rules::Product" }
-  end
-
-  factory :product_promotion_rule, :class => Spree::ProductPromotionRule do
-    promotion_rule
   end
 end

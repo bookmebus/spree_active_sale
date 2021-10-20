@@ -8,13 +8,7 @@ module ActiveSale
         )
         context.sale_product = sale_product
 
-        if sale_product.save!
-          Spree::ProductPromotionRule.create(
-            product_id: product_id,
-            promotion_rule_id: active_sale_event.promotion_rules.first.id,
-            preferences: nil
-          )
-        else
+        unless sale_product.save!
           context.success = false
           context.errors = context.active_sale_event.errors.messages
         end
