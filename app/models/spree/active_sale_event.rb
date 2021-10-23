@@ -15,7 +15,10 @@ module Spree
 
     belongs_to :active_sale
 
+    before_validation :update_permalink
+
     validates :name, :start_date, :end_date, :active_sale_id, :presence => true
+    validates :permalink, :uniqueness => true
 
     validate  :validate_start_and_end_date
     validate  :validate_with_live_event
@@ -49,6 +52,14 @@ module Spree
         end
     end
 
+    def update_permalink
+      self.permalink = self.name.parameterize if self.permalink.blank?
+    end
+
+    def to_param
+      permalink.present? ? permalink : (permalink_was || self.name.parameterize.to_url)
+    end
+
     # override the delete method to set deleted_at value
     # instead of actually deleting the event.
     def delete
@@ -56,9 +67,9 @@ module Spree
     end
 
     # return product's or sale's with prefix permalink
-    def permalink
-      self.single_product_sale? && product.present? ? product : active_sale
-    end
+    # def permalink
+    #   self.single_product_sale? && product.present? ? product : active_sale
+    # end
 
     def product
       products.first
