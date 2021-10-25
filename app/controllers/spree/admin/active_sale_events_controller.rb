@@ -1,7 +1,6 @@
 module Spree
   module Admin
     class ActiveSaleEventsController < ResourceController
-      belongs_to 'spree/active_sale', :find_by => :permalink
       before_action :load_active_sale, :only => [:index]
       before_action :load_data, :except => [:index]
 
@@ -67,6 +66,14 @@ module Spree
 
       protected
 
+        def find_resource
+          Spree::ActiveSaleEvent.find_by!(permalink: params[:id])
+        end
+
+        def collection_url
+          admin_active_sale_active_sale_event_url(@active_sale, @active_sale_event)
+        end
+
         def collection
           return @collection if @collection.present?
           params[:q] ||= {}
@@ -81,11 +88,12 @@ module Spree
         end
 
         def load_active_sale
-          @active_sale = Spree::ActiveSale.find_by_permalink!(params[:active_sale_id])
+          @active_sale = Spree::ActiveSale.find_by!(permalink: params[:active_sale_id])
           @active_sale_events = @active_sale.active_sale_events
         end
 
         def load_data
+          @active_sale = Spree::ActiveSale.find_by!(permalink: params[:active_sale_id])
           @taxons = Taxon.order(:name)
           @shipping_categories = ShippingCategory.order(:name)
         end
