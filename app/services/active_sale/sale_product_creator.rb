@@ -8,7 +8,13 @@ module ActiveSale
         )
         context.sale_product = sale_product
 
-        unless sale_product.save!
+        if sale_product.save!
+          sale_product.product.update(
+            flash_sale_discount: active_sale_event.discount,
+            flash_sale_start_date: active_sale_event.start_date,
+            flash_sale_end_date: active_sale_event.end_date
+          )
+        else
           context.success = false
           context.errors = context.active_sale_event.errors.messages
         end

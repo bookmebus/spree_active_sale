@@ -20,5 +20,11 @@ RSpec.describe ActiveSale::SaleProductCreator do
       active_sale_event_id: active_sale_event.id,
       product_id: product.id
     )
+
+    expect(result.sale_product.product).to have_attributes(
+      flash_sale_discount: active_sale_event.discount,
+      flash_sale_start_date: active_sale_event.start_date,
+      flash_sale_end_date: active_sale_event.end_date
+    )
   end
 end

@@ -9,6 +9,13 @@ module Spree
       base.delegate :live_active_and_hidden, :to => :active_sale_events, :prefix => true
     end
 
+    def is_effective_flash_sale?
+      return false if flash_sale_start_date.blank? || flash_sale_end_date.blank?
+
+      now = Time.zone.now
+      flash_sale_start_date <= now && flash_sale_end_date > now
+    end
+
     # Find live and active taxons for a product.
     def find_live_taxons
       Spree::Taxon.joins([:active_sale_events, :products]).where({ :spree_products => {:id => self.id} }).merge(Spree::ActiveSaleEvent.available)

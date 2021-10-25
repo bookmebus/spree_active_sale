@@ -11,6 +11,7 @@ module Spree
       base.include Spree::ActiveSalesHelper
 
       base.has_many :active_sale_events, :as => :eventable
+      base.delegate :is_effective_flash_sale?, :sale_product, :flash_sale_discount, :flash_sale_start_date, :flash_sale_end_date, to: :product
     end
 
     # variant.live_active_sale_event gets first active sale event which is live and active

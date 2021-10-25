@@ -3,7 +3,7 @@ module Spree
     module V2
       class ActiveSaleEventsController < Spree::Api::V2::ResourceController
         def collection
-          Spree::ActiveSaleEvent.active_and_not_expired.includes(:highlight_products, sale_images: :attachment_blob)
+          Spree::ActiveSaleEvent.active.active_and_not_expired.includes(highlight_products: [:translations, vendor: :translations, master: :images], sale_images: :attachment_blob)
         end
 
         def resource_serializer
