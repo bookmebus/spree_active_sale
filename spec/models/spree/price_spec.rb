@@ -1,6 +1,16 @@
 require 'spec_helper'
 
 describe "Spree::Price" do
+  context ".update_compare_at_amount" do
+    it "returns value with default value of amount" do
+      nil_price = create(:price, amount: 1000, compare_at_amount: nil, currency: "AUD")
+      zero_price = create(:price, amount: 1000, compare_at_amount: nil, currency: "AUD")
+
+      expect(nil_price[:compare_at_amount]).to eq(1000)
+      expect(zero_price[:compare_at_amount]).to eq(1000)
+    end
+  end
+
   context ".compare_at_amount" do
     it "returns value with default value of amount" do
       product = create(
