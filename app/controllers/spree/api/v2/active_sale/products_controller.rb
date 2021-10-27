@@ -14,7 +14,7 @@ module Spree
           private
 
           def active_sale_event
-            Spree::ActiveSaleEvent.find(params[:active_sale_event_id])
+            Spree::ActiveSaleEvent.find_by!(id: params[:active_sale_event_id], deleted_at: nil)
           end
         end
       end
