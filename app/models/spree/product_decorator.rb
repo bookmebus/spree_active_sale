@@ -10,10 +10,10 @@ module Spree
     end
 
     def is_effective_flash_sale?
-      return false if flash_sale_start_date.blank? || flash_sale_end_date.blank?
+      return false if self.flash_sale_start_date.blank? || self.flash_sale_end_date.blank?
 
       now = Time.zone.now
-      flash_sale_start_date <= now && flash_sale_end_date > now
+      self.flash_sale_start_date <= now && self.flash_sale_end_date > now
     end
 
     # Find live and active taxons for a product.
