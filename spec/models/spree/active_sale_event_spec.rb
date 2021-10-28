@@ -15,6 +15,7 @@ describe Spree::ActiveSaleEvent do
     it "should return only active and not expired active event" do
       Spree::ActiveSaleEvent.destroy_all
       active = create(:active_sale_event, start_date: 2.days.ago, end_date: 1.days.from_now, is_active: true)
+      _deleted = create(:active_sale_event, start_date: 2.days.ago, end_date: 1.days.from_now, is_active: true, deleted_at: 1.days.ago)
       _sale_product = create(:sale_product, active_sale_event: active)
 
       _active_without_product = create(:active_sale_event, start_date: 2.days.ago, end_date: 1.days.from_now, is_active: true)
