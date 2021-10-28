@@ -1,8 +1,8 @@
 module Spree
   module Admin
     class ActiveSaleEventsController < ResourceController
-      before_action :load_active_sale, :only => [:index]
-      before_action :load_data, :except => [:index]
+      before_action :load_active_sale, :only => :index
+      before_action :load_data, :except => :index
 
       def create
         active_sale_event_params = permitted_resource_params.merge(active_sale_id: @active_sale.id)
@@ -71,7 +71,7 @@ module Spree
         end
 
         def collection_url
-          admin_active_sale_active_sale_event_url(@active_sale, @active_sale_event)
+          edit_admin_active_sale_url(@active_sale)
         end
 
         def collection
@@ -80,8 +80,6 @@ module Spree
           params[:q][:deleted_at_null] ||= "1"
 
           params[:q][:s] ||= "name asc"
-
-          @search = super.ransack(params[:q])
 
           @search = Spree::ActiveSaleEvent.where(:active_sale_id => params[:active_sale_id]).ransack(params[:q])
           @collection = @search.result.page(params[:page]).per(SpreeActiveSale::Config[:admin_active_sale_events_per_page])
@@ -94,6 +92,7 @@ module Spree
 
         def load_data
           @active_sale = Spree::ActiveSale.find_by!(permalink: params[:active_sale_id])
+          @active_sale_event ||= @active_sale.active_sale_events.find_by!(permalink: params[:active_sale_event_id])
           @taxons = Taxon.order(:name)
           @shipping_categories = ShippingCategory.order(:name)
         end

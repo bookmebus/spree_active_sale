@@ -1,8 +1,11 @@
 module Spree
   module Admin
-    class SaleProductsController < ResourceController
-      belongs_to 'spree/active_sale_event', :find_by => :id
-      prepend_before_action :load_data
+    class SaleProductsController < ::Spree::Admin::ResourceController
+      before_action :load_data
+
+      def index
+        respond_with(@sale_products)
+      end
 
       def create
         result = ::ActiveSale::SaleProductCreator.call(
@@ -36,10 +39,6 @@ module Spree
         end
       end
 
-      def index
-        respond_with(@sale_products)
-      end
-
       private
 
         def collection_url
@@ -47,10 +46,10 @@ module Spree
         end
 
         def load_data
-          @active_sale ||= Spree::ActiveSale.find_by_permalink!(params[:active_sale_id])
-          @active_sale_event ||= Spree::ActiveSaleEvent.find(params[:active_sale_event_id])
+          @active_sale = Spree::ActiveSale.find_by!(permalink: params[:active_sale_id])
+          @active_sale_event = @active_sale.active_sale_events.find_by!(permalink: params[:active_sale_event_id])
 
-          @sale_products = @active_sale_event.sale_products
+          @sale_products = @active_sale_event.sale_products.all
           @sale_products = @sale_products.search_product(params[:q]) if params[:q].present?
           @sale_products
             .includes(product: [:translations, vendor: :translations])
