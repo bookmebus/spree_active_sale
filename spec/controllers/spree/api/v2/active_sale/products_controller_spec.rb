@@ -17,6 +17,8 @@ RSpec.describe Spree::Api::V2::ActiveSale::ProductsController, type: :controller
       json_response = JSON.parse(response.body)
       expect(json_response["data"].size).to eq(1)
       expect(json_response["data"][0]["id"]).to eq(product.id.to_s)
+      expect(json_response["data"][0]["attributes"]["price"]).to eq("19.99")
+      expect(json_response["data"][0]["attributes"]["compare_at_price"]).to eq("19.99")
     end
   end
 end

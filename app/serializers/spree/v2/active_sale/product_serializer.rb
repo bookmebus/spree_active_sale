@@ -6,7 +6,15 @@ module Spree
 
         set_type :product
 
-        attributes :name, :description, :price, :available_on, :slug
+        attributes :name, :description, :available_on, :slug
+
+        attribute :price do |product, params|
+          price(product, params[:currency])
+        end
+
+        attribute :compare_at_price do |product, params|
+          compare_at_price(product, params[:currency])
+        end
 
         # all images from all variants
         has_many :images,
@@ -14,6 +22,8 @@ module Spree
           id_method_name: :variant_image_ids,
           record_type: :image,
           serializer: Spree::V2::Storefront::ImageSerializer
+
+        belongs_to :vendor, serializer: :vendor_simple
       end
     end
   end

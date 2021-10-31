@@ -1,6 +1,6 @@
 <% @sale_product ||= Spree::SaleProduct.new %>
 
-<%= form_for @sale_product, :url => admin_active_sale_active_sale_event_sale_products_url(@active_sale, @active_sale_event.id, @sale_product), :html => { :multipart => true } do |f| %>
+<%= form_for @sale_product, :url => admin_active_sale_active_sale_event_sale_products_url(@active_sale, @active_sale_event, @sale_product), :html => { :multipart => true } do |f| %>
   <div class="row">
     <%= f.hidden_field :active_sale_event_id, :value => @active_sale_event.id %>
 
