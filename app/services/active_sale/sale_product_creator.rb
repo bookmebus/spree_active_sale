@@ -14,6 +14,8 @@ module ActiveSale
             flash_sale_start_date: active_sale_event.start_date,
             flash_sale_end_date: active_sale_event.end_date
           )
+
+          CartSyncJob.perform_later(product_ids: [product_id], last_updated_at: Time.zone.now)
         else
           context.success = false
           context.errors = context.active_sale_event.errors.messages
