@@ -17,6 +17,8 @@ module Spree
 
     before_validation :update_permalink
     after_save :update_line_items
+    after_create :create_with_end_date
+    after_update :update_with_end_date
 
     validates :name, :start_date, :end_date, :active_sale_id, :presence => true
     validates :permalink, :uniqueness => true
@@ -55,6 +57,21 @@ module Spree
 
     def update_permalink
       self.permalink = self.name.parameterize if self.permalink.blank?
+    end
+
+    def create_with_end_date
+      if self.end_date > Time.zone.now
+        wait_time = (Time.zone.now - self.end_date).to_i
+        ActiveSaleEventResetterJob.set(wait: wait_time.seconds).perform_later(self.id)
+      end
+    end
+
+    def update_with_end_date
+      if self.saved_change_to_end_date?
+        interval = (self.end_date - Time.zone.now).to_i
+        wait_time = interval >= 0? interval : 0
+        ActiveSaleEventResetterJob.set(wait: wait_time.seconds).perform_later(self.id)
+      end
     end
 
     def update_line_items

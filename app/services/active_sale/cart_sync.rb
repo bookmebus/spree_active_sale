@@ -1,5 +1,6 @@
 module ActiveSale
   class CartSync < BaseService
+    # product_ids:, last_updated_at:
     def call
       pending_orders.includes(line_items: :variant).find_each do |order|
         update_cart(order)
@@ -19,7 +20,7 @@ module ActiveSale
         .joins("INNER JOIN spree_line_items ON spree_orders.id=spree_line_items.order_id")
         .joins("INNER JOIN spree_variants ON spree_line_items.variant_id=spree_variants.id")
         .where("spree_variants.product_id": product_ids)
-        .where("spree_line_items.updated_at > ?", last_updated_at)
+        # .where("spree_line_items.updated_at > ?", last_updated_at)
         .where.not("spree_orders.state": 'complete')
 
       Spree::Order.where("id in (#{unique_order_ids.to_sql})")
