@@ -2,6 +2,11 @@ module Spree
   module PriceDecorator
     def self.prepended(base)
       base.before_validation :update_compare_at_amount
+      base.after_save :update_line_items
+    end
+
+    def update_line_items
+      CartSyncJob.perform_later(product_ids: [variant.product.id], last_updated_at: Time.zone.now) if saved_change_to_compare_at_amount?
     end
 
     def update_compare_at_amount

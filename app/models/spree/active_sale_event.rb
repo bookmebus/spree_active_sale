@@ -16,6 +16,7 @@ module Spree
     belongs_to :active_sale
 
     before_validation :update_permalink
+    after_save :update_line_items
 
     validates :name, :start_date, :end_date, :active_sale_id, :presence => true
     validates :permalink, :uniqueness => true
@@ -54,6 +55,11 @@ module Spree
 
     def update_permalink
       self.permalink = self.name.parameterize if self.permalink.blank?
+    end
+
+    def update_line_items
+      #TODO improve check with live?
+      CartSyncJob.perform_later(product_ids: product_ids, last_updated_at: Time.zone.now) if self.saved_change_to_discount?
     end
 
     def to_param
