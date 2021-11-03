@@ -58,6 +58,18 @@ module Spree
         end
       end
 
+      def toggle_event
+        context = ::ActiveSale::ActiveSaleEventActivator.call(active_sale_event: find_resource)
+
+        if context.success
+          flash[:success] = flash_message_for(@object, :successfully_updated)
+        else
+          flash[:error] = context.message
+        end
+
+        redirect_to( :action => :index )
+      end
+
       private
 
         def location_after_save

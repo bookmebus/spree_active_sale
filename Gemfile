@@ -20,5 +20,12 @@ gem 'rails-controller-testing'
 gem 'factory_bot'
 gem 'ffaker'
 gem 'byebug'
+gem 'request_store'
+
+group :development, :test do
+  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+    gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master'
+  end
+end
 
 gemspec

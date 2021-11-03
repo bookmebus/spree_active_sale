@@ -10,10 +10,7 @@ RSpec.describe ActiveSale::ActiveSaleEventUpdater do
       end_date: DateTime.now.next_week
     )
     product = create(
-      :product,
-      flash_sale_discount: active_sale_event.discount,
-      flash_sale_start_date: active_sale_event.start_date,
-      flash_sale_end_date: active_sale_event.end_date
+      :product
     )
     sale_product = create(:sale_product, active_sale_event: active_sale_event, product: product)
 
@@ -34,9 +31,9 @@ RSpec.describe ActiveSale::ActiveSaleEventUpdater do
     )
 
     expect(product.reload).to have_attributes(
-      flash_sale_discount: 20,
-      flash_sale_start_date: DateTime.parse("2021/09/07 20:27:49 +0700").utc,
-      flash_sale_end_date: DateTime.parse("2021/09/08 20:27:49 +0700").utc
+      event_discount: 20,
+      event_start_date: DateTime.parse("2021/09/07 20:27:49 +0700").utc,
+      event_end_date: DateTime.parse("2021/09/08 20:27:49 +0700").utc
     )
   end
 end

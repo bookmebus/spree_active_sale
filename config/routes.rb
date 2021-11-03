@@ -7,6 +7,7 @@ Spree::Core::Engine.routes.draw do
         post :update_positions
       end
       resources :active_sale_events, :path => :events do
+        put :toggle_event, :on => :member
         put :update_events, :on => :member
         resources :sale_images, :path => :images do
           post :update_positions, :on => :collection
@@ -20,9 +21,9 @@ Spree::Core::Engine.routes.draw do
 
   namespace :api do
     namespace :v2 do
-      resources :active_sale_events, only: [:index, :show]
-      namespace :active_sale do
-        resources :products, only: [:index]
+      resources :active_sale_events, path: :events, only: [:index, :show] do
+        # Change controller name products controller to active_sale_event_products controller to avoid name conflict
+        resources :active_sale_event_products, only: [:index], path: :products
       end
     end
   end

@@ -6,8 +6,7 @@ module Spree
   class ActiveSaleEvent < ActiveRecord::Base
     has_many :sale_images, -> { order(position: :asc) },  :as => :viewable, :dependent => :destroy
     has_many :sale_products, -> { order(position: :asc) }, :dependent => :destroy
-    has_many :products, -> { order(position: :asc) }, :through => :sale_products
-    has_many :highlight_products, -> { limit(6) }, :through => :sale_products, source: :product
+    has_many :products, :through => :sale_products
     has_many :sale_taxons, -> { order(position: :asc) }, :dependent => :destroy
     has_many :taxons, -> { order(position: :asc) }, :through => :sale_taxons
     has_many :sale_properties, :dependent => :destroy
@@ -24,11 +23,12 @@ module Spree
     validates :permalink, :uniqueness => true
 
     validate  :validate_start_and_end_date
-    validate  :validate_with_live_event
+    # validate  :validate_with_live_event
 
     scope :active_and_not_expired, -> { where("start_date < ?", Time.zone.now.utc).where("end_date > ?", Time.zone.now.utc).where(deleted_at: nil) }
+    scope :not_expired, -> { where("start_date < ?", Time.zone.now.utc).where("end_date > ?", Time.zone.now.utc).where(deleted_at: nil) }
     scope :has_product_count, -> { where('sale_products_count>0') }
-    scope :effective, -> { active_and_not_expired.has_product_count }
+    scope :effective, -> { not_expired.has_product_count.order(is_active: :desc) }
 
     class << self
       # Spree::ActiveSaleEvent.is_live? method
@@ -53,6 +53,10 @@ module Spree
           options[:page] = page > 0 ? page : 1
           options
         end
+    end
+
+    def self.effective_flash_sale
+      RequestStore.store[:effective_flash_sale] ||= active.effective.first
     end
 
     def update_permalink
@@ -98,6 +102,15 @@ module Spree
       products.first
     end
 
+    def activatable?
+      moment = Time.zone.now
+
+      return false unless start_and_dates_available?
+      return false if sale_products_count == 0
+
+      self.start_date <= moment && self.end_date >= moment
+    end
+
     def live?(moment=nil)
       moment = moment || object_zone_time
 
@@ -136,11 +149,11 @@ module Spree
       end
 
       # check if there is no another event is currently live and active
-      def validate_with_live_event
-        if !active_sale.active_sale_events.where('id != :id', {:id => self.id}).select{ |ase| ase.live? }.blank? && self.live?
-          errors.add(:another_event, I18n.t('spree.active_sale.event.validation.errors.live_event'))
-        end
-      end
+      # def validate_with_live_event
+      #   if !active_sale.active_sale_events.where('id != :id', {:id => self.id}).select{ |ase| ase.live? }.blank? && self.live?
+      #     errors.add(:another_event, I18n.t('spree.active_sale.event.validation.errors.live_event'))
+      #   end
+      # end
 
       def object_zone_time
         Time.zone.now
