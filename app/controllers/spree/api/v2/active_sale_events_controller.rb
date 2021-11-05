@@ -2,8 +2,17 @@ module Spree
   module Api
     module V2
       class ActiveSaleEventsController < Spree::Api::V2::ResourceController
+        # We are not using this index action because we want active sale event with top 6 product
         def collection
-          Spree::ActiveSaleEvent.active.active_and_not_expired.includes(highlight_products: [:translations, vendor: :translations, master: :images], sale_images: :attachment_blob)
+          Spree::ActiveSaleEvent.active.active_and_not_expired
+            .includes(
+              products: [
+                :translations,
+                vendor: :translations,
+                master: :images
+              ],
+              sale_images: :attachment_blob
+          )
         end
 
         def resource_serializer
@@ -15,7 +24,7 @@ module Spree
         end
 
         def resource
-          Spree::ActiveSaleEvent.find(params[:id])
+          Spree::ActiveSaleEvent.find_by!(permalink: params[:id])
         end
       end
     end

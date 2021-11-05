@@ -6,7 +6,9 @@ module Spree
     end
 
     def update_line_items
-      CartSyncJob.perform_later(product_ids: [variant.product.id], last_updated_at: Time.zone.now) if saved_change_to_compare_at_amount?
+      if saved_change_to_compare_at_amount?
+        CartSyncJob.perform_later(product_ids: [variant.product.id], last_updated_at: Time.zone.now)
+      end
     end
 
     def update_compare_at_amount
@@ -24,7 +26,7 @@ module Spree
     # decorate amount for flash sale
     def amount
       if variant&.is_effective_flash_sale?
-        flash_sale_price = compare_at_amount.to_f * (100 - variant.flash_sale_discount) / 100
+        flash_sale_price = compare_at_amount.to_f * (100 - variant.event_discount) / 100
 
         flash_sale_price < self[:amount] ? flash_sale_price : self[:amount]
       else

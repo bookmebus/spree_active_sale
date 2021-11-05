@@ -1,6 +1,6 @@
 module Spree
   class SaleProduct < ActiveRecord::Base
-    belongs_to :active_sale_event, :class_name => 'Spree::ActiveSaleEvent', counter_cache: true
+    belongs_to :active_sale_event, :class_name => 'Spree::ActiveSaleEvent', counter_cache: :sale_products_count
     belongs_to :product, :class_name => 'Spree::Product'
 
     delegate :product_name, :to => :product
