@@ -15,6 +15,7 @@ module Spree
     belongs_to :active_sale
 
     before_validation :update_permalink
+    before_create :set_default_value
     after_save :update_line_items
     after_create :create_with_end_date
     after_update :update_with_end_date
@@ -57,6 +58,10 @@ module Spree
 
     def self.effective_flash_sale
       RequestStore.store[:effective_flash_sale] ||= active.effective.first
+    end
+
+    def set_default_value
+      self.is_active = false
     end
 
     def update_permalink
