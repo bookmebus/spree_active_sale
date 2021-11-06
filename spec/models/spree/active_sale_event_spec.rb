@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Spree::ActiveSaleEvent do
+
+  it 'sets is_active to false on create' do
+    event = build(:active_sale_event, is_active: true)
+    event.save
+    expect(event.is_active).to eq false
+  end
+
   it "should not save when name is not given" do
     active_sale = create(:active_sale)
     active_sale_event = Spree::ActiveSaleEvent.new
