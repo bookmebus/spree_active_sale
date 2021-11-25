@@ -56,8 +56,17 @@ module Spree
         end
     end
 
+    # if no effective_flash_sale then it keeps making query because of the nil result
+    # return false instead of nil
     def self.effective_flash_sale
-      RequestStore.store[:effective_flash_sale] ||= active.effective.first
+      # RequestStore.store[:effective_flash_sale] ||= active.effective.first
+      return  RequestStore.store[:effective_flash_sale] if !RequestStore.store[:effective_flash_sale].nil?
+      result = active.effective.first
+
+      result = result.nil? ? false : result
+      RequestStore.store[:effective_flash_sale] = result
+
+      RequestStore.store[:effective_flash_sale]
     end
 
     def set_default_value
