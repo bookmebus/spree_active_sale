@@ -6,6 +6,7 @@ module ActiveSale
 
       #TODO reset product or remove denormalize from product
       CartSync.call(product_ids: active_sale_event.product_ids)
+      active_sale_event.sale_products.update_all(is_active: false)
     end
 
     def active_sale_event

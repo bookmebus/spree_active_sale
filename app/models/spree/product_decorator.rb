@@ -3,6 +3,8 @@ module Spree
     def self.prepended(base)
       base.has_many :sale_products
       base.has_many :active_sale_events, :through => :sale_products
+      # base.has_one  :effective_flash_sale: -> { where() }, through: :sale_products, class_name: 'Spree::ActiveSaleEvent'
+      # base.has_one :effective_sale_product, -> { where(is_active: true) }, class_name: 'Spree::SaleProduct'
 
       base.delegate :available, :to => :active_sale_events, :prefix => true
       base.delegate :live_active, :to => :active_sale_events, :prefix => true
@@ -10,7 +12,7 @@ module Spree
     end
 
     def event_start_date
-      effective_flash_sale&.start_date
+      effective_sale_product&.active_sale_event&.start_date
     end
 
     def event_end_date
@@ -18,16 +20,21 @@ module Spree
     end
 
     def event_discount
-      effective_flash_sale&.discount
+      effective_sale_product&.discount
     end
 
     def effective_flash_sale
-      sale_event = Spree::ActiveSaleEvent.effective_flash_sale
-      if sale_event.present? && sale_event.product_ids.include?(self.id)
-        sale_event
-      else
-        nil
-      end
+      return Spree::ActiveSaleEvent.effective_flash_sale if sale_product_by_id[self.id]
+
+      nil
+    end
+
+    def effective_sale_product
+      sale_product_by_id[self.id]
+    end
+
+    def sale_product_by_id
+      @sale_product_by_id ||= Spree::ActiveSaleEvent.effective_flash_sale.sale_products.index_by(&:product_id)
     end
 
     def is_effective_flash_sale?

@@ -11,9 +11,7 @@ FactoryBot.define do
   end
 
   trait :permanent do
-    is_permanent true
-  end
-
+    is_permanent true end
   factory :active_sale, :class => Spree::ActiveSale do
     sequence(:name) { |n| "Active Sale ##{n} - #{Kernel.rand(9999)}" }
 
@@ -50,6 +48,7 @@ FactoryBot.define do
     description { FFaker::Lorem.paragraphs(1 + Kernel.rand(5)).join("\n") }
     sequence(:start_date) { |n| n < 1 ? 1.day.ago : n.days.ago }
     sequence(:end_date) { |n| n < 1 ? 1.day.from_now : n.days.from_now }
+    discount { 30 }
 
     factory :active_sale_event_with_products do
       ignore do

@@ -10,6 +10,7 @@ module Spree
       def create
         result = ::ActiveSale::SaleProductCreator.call(
           product_id: permitted_resource_params["product_id"],
+          discount: permitted_resource_params["discount"],
           active_sale_event: @active_sale_event
         )
         @object = result.sale_product
