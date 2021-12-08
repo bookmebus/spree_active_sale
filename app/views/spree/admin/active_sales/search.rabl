@@ -3,9 +3,9 @@ child(@products => :products) do |products|
   attributes :id
   node(:name) do |product|
     if product.vendor.present?
-      "#{product.name} (#{product.vendor&.name})"
+      "#{product.sku}-#{product.name} (#{product.vendor&.name})"
     else
-      product.name
+      "#{product.sku}-#{product.name}"
     end
   end
 end
