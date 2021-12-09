@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ActiveSale::ActiveSaleEventActivater do
+RSpec.describe ActiveSale::ActiveSaleEventActivator do
   it "activates event and deactivates other events" do
     event = build_event(is_active: false)
     other_event = build_event(is_active: true)
@@ -9,7 +9,9 @@ RSpec.describe ActiveSale::ActiveSaleEventActivater do
     ActiveSale::ActiveSaleEventActivator.call(active_sale_event: event)
 
     expect(event.reload.is_active).to eq(true)
+    expect(event.sale_products.first.is_active).to eq(true)
     expect(other_event.reload.is_active).to eq(false)
+    expect(other_event.sale_products.first.is_active).to eq(false)
   end
 
   it "deactivates event and not deactivates other events" do
@@ -32,7 +34,7 @@ RSpec.describe ActiveSale::ActiveSaleEventActivater do
     )
 
     product = create(:product)
-    create(:sale_product, active_sale_event: event, product: product)
+    create(:sale_product, active_sale_event: event, product: product, discount: 20, is_active: is_active)
 
     event
   end

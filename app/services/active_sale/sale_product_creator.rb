@@ -3,7 +3,8 @@ module ActiveSale
     def call
       sale_product = Spree::SaleProduct.new(
         product_id: product_id,
-        active_sale_event_id: active_sale_event.id
+        discount: discount,
+        active_sale_event: active_sale_event
       )
       context.sale_product = sale_product
 
@@ -29,6 +30,10 @@ module ActiveSale
 
     def product_id
       attributes.fetch(:product_id)
+    end
+
+    def discount
+      attributes.fetch(:discount)
     end
   end
 end

@@ -56,6 +56,18 @@ module Spree
         end
     end
 
+    def self.migrate_discount
+      sale_event_ids = Spree::ActiveSaleEvent
+        .includes(:sale_products)
+        .where(spree_sale_products: { discount: nil }).ids
+
+      sale_event_ids.each do |sale_event_id|
+        sale_event = Spree::ActiveSaleEvent.find(sale_event_id)
+        Spree::SaleProduct.where(active_sale_event_id: sale_event_id)
+          .update(discount: sale_event.discount)
+      end
+    end
+
     # if no effective_flash_sale then it keeps making query because of the nil result
     # return false instead of nil
     def self.effective_flash_sale

@@ -20,8 +20,6 @@ describe "Spree::Price" do
       allow(product).to receive(:event_end_date).and_return(1.days.from_now)
       allow(product).to receive(:event_discount).and_return(40)
       price = create(:price, variant: product.master, amount: 1000, compare_at_amount: nil, currency: "AUD")
-      puts price.variant.product
-      debugger
       allow(price).to receive(:variant).and_return(product)
 
       expect(price.compare_at_amount).to eq(1000)
