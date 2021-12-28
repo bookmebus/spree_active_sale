@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ActiveSale::ActiveSaleEventActivater do
+RSpec.describe ActiveSale::ActiveSaleEventActivator do
   it "activates event and deactivates other events" do
     event = build_event(is_active: false)
     other_event = build_event(is_active: true)
