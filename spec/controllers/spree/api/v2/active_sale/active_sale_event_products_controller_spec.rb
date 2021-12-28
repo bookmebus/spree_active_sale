@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Spree::Api::V2::ActiveSale::ProductsController, type: :controller do
+RSpec.describe ::Spree::Api::V2::ActiveSaleEventProductsController, type: :controller do
   routes { Spree::Core::Engine.routes }
 
   describe "GET index" do
@@ -8,8 +8,8 @@ RSpec.describe Spree::Api::V2::ActiveSale::ProductsController, type: :controller
       Spree::ActiveSale.destroy_all
       active_sale_event = create(:active_sale_event)
       product = create(:product)
-      sale_product = create(:sale_product, product: product, active_sale_event: active_sale_event)
-      other_product = create(:product)
+      create(:sale_product, product: product, active_sale_event: active_sale_event)
+      create(:product)
 
       get :index, params: { active_sale_event_id: active_sale_event.id }
 
