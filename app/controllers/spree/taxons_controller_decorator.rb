@@ -9,7 +9,7 @@ module Spree
       return unless @taxon
 
       if @taxon.live?
-        @searcher = Spree::Config.searcher_class.new(params.merge(:taxon => @taxon.id))
+        @searcher = Spree.searcher_class.new(params.merge(:taxon => @taxon.id))
         @objects = @searcher.send(@retrieve_type) #retrieve_products
 
         respond_with(@taxon)

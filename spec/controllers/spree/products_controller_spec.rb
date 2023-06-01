@@ -4,14 +4,15 @@ require 'spec_helper'
 describe Spree::ProductsController, type: :controller do
   routes { Spree::Core::Engine.routes }
 
-  let!(:user) { instance_double(Spree::User, :spree_api_key => 'fake', :last_incomplete_spree_order => nil) }
+  let!(:user) { create(:user) }
 
-  let(:active_sale_event) { FactoryBot.create(:active_sale_event_with_products) }
-  let(:inactive_sale_event) { FactoryBot.create(:inactive_sale_event_with_products) }
+  let(:active_sale_event) { create(:active_sale_event_with_products) }
+  let(:inactive_sale_event) { create(:inactive_sale_event_with_products) }
 
   before do
     allow_any_instance_of(Spree::ProductsController).to receive(:spree_current_user).and_return(user)
     user.stub :has_spree_role? => true
+    active_sale_event.update(is_active: true)
   end
 
   describe "GET show" do

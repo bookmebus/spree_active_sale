@@ -28,7 +28,7 @@ RSpec.describe ActiveSale::ActiveSaleEventCreator do
       start_date: DateTime.parse("2021/09/07 20:27:49 +0700").utc,
       end_date: DateTime.parse("2021/09/08 20:27:49 +0700").utc,
       discount: 40,
-      is_active: true,
+      is_active: false,
       is_hidden: true,
       is_permanent: false,
       single_product_sale: false
@@ -55,7 +55,7 @@ RSpec.describe ActiveSale::ActiveSaleEventCreator do
     result = ActiveSale::ActiveSaleEventCreator.call(params: params)
 
     expect(result.success).to eq(false)
-    expect(result.active_sale_event.nil?).to eq(true)
-    expect(result.errors).to eq(["Validation failed: Name can't be blank"])
+    expect(result.active_sale_event.id.nil?).to eq(true)
+    expect(result.errors).to eq({:name=>["can't be blank"]})
   end
 end

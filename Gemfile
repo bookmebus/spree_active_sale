@@ -10,8 +10,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'spree', github: 'spree/spree', branch: '4-2-stable'
-gem 'spree_auth_devise', '~> 4.3'
+spree_version = '>= 4.5'
+
+gem 'spree', spree_version
+gem 'spree_auth_devise', spree_version
 gem 'coveralls', require: false
 gem 'spree_analytics_trackers'
 gem 'spree_multi_vendor'
@@ -23,9 +25,16 @@ gem 'byebug'
 gem 'request_store'
 
 group :development, :test do
-  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
-    gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master'
+  # %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+  #   gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'main'
+  # end
+
+  %w[rspec rspec-core rspec-expectations rspec-mocks rspec-support].each do |lib|
+    gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => 'main'
   end
+
+  gem 'spree_sample', '~> 4.5'
+  gem 'mobility'
 end
 
 gemspec

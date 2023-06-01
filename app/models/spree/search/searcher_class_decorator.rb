@@ -92,4 +92,4 @@ module Spree
   end
 end
 
-Spree::Config.searcher_class.prepend(Spree::Search::SearcherClassDecorator)
+Spree.searcher_class.prepend(Spree::Search::SearcherClassDecorator)

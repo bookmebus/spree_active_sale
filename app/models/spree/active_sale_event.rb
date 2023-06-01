@@ -74,7 +74,7 @@ module Spree
     end
 
     def update_permalink
-      self.permalink = self.name.parameterize if self.permalink.blank?
+      self.permalink = self.name.try(:parameterize) if self.permalink.blank?
     end
 
     def create_with_end_date
