@@ -10,6 +10,10 @@ module SpreeActiveSale
     end
 
     initializer 'spree_active_sale.environment', before: :load_config_initializers do |_app|
+      Config = Configuration.new
+    end
+
+    config.after_initialize do
       SpreeActiveSale::Config = Spree::ActiveSaleConfiguration.new
     end
 

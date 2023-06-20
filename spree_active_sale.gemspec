@@ -39,10 +39,11 @@ Gem::Specification.new do |s|
   # s.add_development_dependency 'sass-rails'
   # s.add_development_dependency 'sqlite3'
 
-  spree_version = '>= 4.2.0', '< 6.0'
+  spree_version = '>= 4.5'
   s.add_dependency 'spree_core', spree_version
   s.add_dependency 'spree_api', spree_version
   s.add_dependency 'spree_backend', spree_version
+  s.add_dependency 'spree_frontend', spree_version
   s.add_dependency 'spree_extension'
   s.add_dependency 'spree_analytics_trackers'
   s.add_dependency 'spree_multi_vendor'
@@ -55,4 +56,5 @@ Gem::Specification.new do |s|
   # end
 
   s.add_development_dependency 'spree_dev_tools'
+  s.add_development_dependency 'pg'
 end

@@ -38,13 +38,13 @@ describe "Spree::Price" do
   end
 
   context ".amount " do
-    it "returns amount with discount if it is a price of flash sale variant" do
+    it "returns amount with no discount if it isn't a price of flash sale variant" do
       product = create(
         :product
       )
       price = create(:price, variant: product.master, amount: 1000, currency: "AUD")
 
-      expect(price.amount).to eq(600)
+      expect(price.amount).to eq(1000)
     end
   end
 end

@@ -7,11 +7,12 @@ RSpec.describe ::Spree::Api::V2::ActiveSaleEventProductsController, type: :contr
     it "lists all active sale products of active sale event" do
       Spree::ActiveSale.destroy_all
       active_sale_event = create(:active_sale_event)
+
       product = create(:product)
       create(:sale_product, product: product, active_sale_event: active_sale_event)
       create(:product)
 
-      get :index, params: { active_sale_event_id: active_sale_event.id }
+      get :index, params: { active_sale_event_id: active_sale_event.permalink }
 
       expect(response.status).to eq(200)
       json_response = JSON.parse(response.body)

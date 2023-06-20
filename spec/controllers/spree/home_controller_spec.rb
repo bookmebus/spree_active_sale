@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Spree::HomeController, type: :controller do
   routes { Spree::Core::Engine.routes }
 
-  let(:user) { instance_double(Spree::User, :last_incomplete_spree_order => nil, :spree_api_key => 'fake') }
+  let(:user) { create(:user) }
   let(:sale) { create(:active_sale_with_events, :events_count => 2) }
 
   before do

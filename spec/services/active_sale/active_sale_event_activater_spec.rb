@@ -16,7 +16,6 @@ RSpec.describe ActiveSale::ActiveSaleEventActivator do
     event = build_event(is_active: true)
     other_event = build_event(is_active: false)
 
-
     ActiveSale::ActiveSaleEventActivator.call(active_sale_event: event)
 
     expect(event.reload.is_active).to eq(false)
@@ -28,8 +27,9 @@ RSpec.describe ActiveSale::ActiveSaleEventActivator do
       :active_sale_event,
       start_date: DateTime.now,
       end_date: DateTime.now.next_week,
-      is_active: is_active
     )
+
+    event.update(is_active: is_active)
 
     product = create(:product)
     create(:sale_product, active_sale_event: event, product: product)

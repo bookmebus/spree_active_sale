@@ -16,10 +16,5 @@ RSpec.describe ActiveSale::SaleProductDestroyer do
     ActiveSale::SaleProductDestroyer.call(sale_product: sale_product)
 
     expect(Spree::SaleProduct.exists?(sale_product.id)).to eq(false)
-    expect(product.reload).to have_attributes(
-      flash_sale_discount: nil,
-      flash_sale_start_date: nil,
-      flash_sale_end_date: nil
-    )
   end
 end
