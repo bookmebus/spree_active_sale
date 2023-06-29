@@ -15,13 +15,12 @@ spree_version = '>= 4.5'
 gem 'spree', spree_version
 gem 'spree_auth_devise', spree_version
 gem 'coveralls', require: false
-gem 'spree_analytics_trackers'
 gem 'spree_multi_vendor'
 
 gem 'rails-controller-testing'
 gem 'factory_bot'
 gem 'ffaker'
-gem 'byebug'
+
 gem 'request_store'
 
 group :development, :test do
@@ -35,6 +34,8 @@ group :development, :test do
 
   gem 'spree_sample', '~> 4.5'
   gem 'mobility'
+  gem 'byebug'
+  gem 'pg'
 end
 
 gemspec
